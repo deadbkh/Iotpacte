@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau des Données</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tableau des Données</h1>
+    <nav>
+        <a href="index.html">Tableau des Données</a> |
+        <a href="alerts.html">Alertes</a> |
+        <a href="concc.html">Consommation</a>
+    </nav>
+    <input type="text" id="start-date" placeholder="Date de début">
+    <input type="text" id="end-date" placeholder="Date de fin">
+    <button onclick="loadData()">Charger</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Horodatage</th>
+                <th>Niveau (L)</th>
+                <th>Débit (L/h)</th>
+                <th>Alerte</th>
+            </tr>
+        </thead>
+        <tbody id="data-table"></tbody>
+    </table>
+
+    <script>
+        // Initialiser le calendrier
+        flatpickr("#start-date");
+        flatpickr("#end-date");
+
+        // Charger les données
+        function loadData() {
+            const start = document.getElementById("start-date").value;
+            const end = document.getElementById("end-date").value;
+
+            fetch(`/data?start=${start}&end=${end}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById("data-table");
+                    tableBody.innerHTML = "";
+
+                    data.forEach(entry => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${entry.timestamp}</td>
+                            <td>${entry.level}</td>
+                            <td>${entry.flow_rate}</td>
+                            <td>${entry.alert}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>

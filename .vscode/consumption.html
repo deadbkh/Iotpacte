@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consommation du Réservoir</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 1.2em;
+        }
+
+        canvas {
+            width: 100%;
+            height: 400px;
+        }
+
+        select, button {
+            padding: 10px;
+            font-size: 1em;
+            margin: 10px 0;
+            width: 200px;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="container">
+    <h1>Consommation du Réservoir</h1>
+    <div class="links">
+        <a href="index.html">Statistiques</a>
+        <a href="alerts.html">Les alertes</a>
+    </div>
+    <label for="daySelector">Sélectionner un jour:</label>
+    <input type="date" id="daySelector">
+    <button onclick="loadConsumptionData()">Afficher le graphique</button>
+
+    <h2>Graphique de Consommation</h2>
+    <canvas id="consumptionChart"></canvas>
+</div>
+
+<script>
+    // Charger les données depuis le fichier JSON
+    function loadData() {
+        return fetch("reservoir_data.json")
+            .then(response => response.json())
+            .then(data => data.statistics || [])
+            .catch(error => console.error("Erreur de chargement des données :", error));
+    }
+
+    // Filtrer les données par jour
+    function filterDataByDay(data, selectedDay) {
+        return data.filter(entry => {
+            const timestamp = new Date(entry.timestamp);
+            const day = timestamp.getDate();
+            return day === selectedDay;
+        });
+    }
+
+    // Afficher le graphique de consommation
+    function loadConsumptionData() {
+        const selectedDay = new Date(document.getElementById("daySelector").value).getDate();
+
+        if (!selectedDay) {
+            alert("Veuillez sélectionner un jour.");
+            return;
+        }
+
+        loadData().then(data => {
+            const filteredData = filterDataByDay(data, selectedDay);
+
+            const labels = filteredData.map(entry => {
+                const timestamp = new Date(entry.timestamp);
+                return `${timestamp.getHours()}:${timestamp.getMinutes()}`;
+            });
+            const consumption = filteredData.map(entry => entry.consumption);
+
+            const ctx = document.getElementById('consumptionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `Consommation du jour ${selectedDay}`,
+                        data: consumption,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Heure'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Consommation (L)'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

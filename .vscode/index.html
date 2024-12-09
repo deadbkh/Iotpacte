@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation des Données IoT</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Visualisation des Données IoT</h1>
+
+        <!-- Liens vers les autres pages -->
+        <div class="links">
+            <a href="alerts.html">Alertes</a>
+            <a href="consumption.html">Consommation</a>
+        </div>
+
+        <!-- Sélecteur de jour -->
+        <h2>Sélectionner un jour</h2>
+        <input type="date" id="daySelector">
+        <button onclick="filterDataByDay()">Afficher les données</button>
+
+        <!-- Tableau des données -->
+        <h2>Niveau, Débit, Consommation et État du Réservoir par Heure</h2>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Horodatage</th>
+                    <th>Niveau (L)</th>
+                    <th>Débit (L/s)</th>
+                    <th>Consommation (L)</th>
+                    <th>État du Réservoir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les données seront chargées ici -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Charger les données depuis le fichier JSON
+        function loadData() {
+            return fetch("reservoir_data.json")
+                .then(response => response.json())
+                .then(data => data.statistics || [])
+                .catch(error => console.error("Erreur de chargement des données :", error));
+        }
+
+        // Filtrer les données par jour
+        function filterDataByDay() {
+            const selectedDay = document.getElementById("daySelector").value;
+            loadData().then(data => {
+                // Filtrer les données par jour
+                const filteredData = data.filter(entry => entry.timestamp.startsWith(selectedDay));
+                // Mettez à jour le tableau avec les données filtrées
+                populateTable(filteredData);
+            });
+        }
+
+        // Afficher les données dans le tableau
+        function populateTable(data) {
+            const tableBody = document.getElementById("dataTable").querySelector("tbody");
+            tableBody.innerHTML = ""; // Réinitialiser le tableau
+
+            // Afficher chaque entrée de données
+            data.forEach(entry => {
+                const row = document.createElement("tr");
+
+                const timestampCell = document.createElement("td");
+                timestampCell.textContent = entry.timestamp;
+                row.appendChild(timestampCell);
+
+                const levelCell = document.createElement("td");
+                levelCell.textContent = entry.level.toFixed(2);
+                row.appendChild(levelCell);
+
+                const flowRateCell = document.createElement("td");
+                flowRateCell.textContent = entry.flow_rate.toFixed(2);
+                row.appendChild(flowRateCell);
+
+                const consumptionCell = document.createElement("td");
+                consumptionCell.textContent = entry.consumption.toFixed(2);
+                row.appendChild(consumptionCell);
+
+                const stateCell = document.createElement("td");
+                stateCell.textContent = entry.reservoir_state;
+                row.appendChild(stateCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Charger les données et les afficher
+        loadData().then(data => {
+            populateTable(data);
+        });
+    </script>
+</body>
+</html>

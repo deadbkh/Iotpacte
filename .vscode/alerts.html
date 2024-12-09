@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertes du Réservoir</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Alertes du Réservoir</h1>
+ <!-- Liens vers les autres pages -->
+ <div class="links">
+    <a href="index.html">Statistiques</a>
+    <a href="consumption.html">Consommation</a>
+</div>
+        <!-- Sélecteur de jour -->
+        <h2>Sélectionner un jour</h2>
+        <input type="date" id="daySelector">
+        <button onclick="filterAlertsByDay()">Afficher les alertes</button>
+
+        <!-- Tableau des alertes -->
+        <h2>Alertes par Heure</h2>
+        <table id="alertsTable">
+            <thead>
+                <tr>
+                    <th>Horodatage</th>
+                    <th>Alerte</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les alertes seront chargées ici -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Charger les alertes depuis le fichier JSON
+        function loadAlerts() {
+            return fetch("reservoir_data.json")
+                .then(response => response.json())
+                .then(data => data.alerts || [])
+                .catch(error => console.error("Erreur de chargement des alertes :", error));
+        }
+
+        // Filtrer les alertes par jour
+        function filterAlertsByDay() {
+            const selectedDay = document.getElementById("daySelector").value;
+            loadAlerts().then(alerts => {
+                // Filtrer les alertes par jour
+                const filteredAlerts = alerts.filter(entry => entry.timestamp.startsWith(selectedDay));
+                // Mettez à jour le tableau avec les alertes filtrées
+                populateAlertsTable(filteredAlerts);
+            });
+        }
+
+        // Afficher les alertes dans le tableau
+        function populateAlertsTable(alerts) {
+            const tableBody = document.getElementById("alertsTable").querySelector("tbody");
+            tableBody.innerHTML = ""; // Réinitialiser le tableau
+
+            // Afficher chaque alerte
+            alerts.forEach(alert => {
+                const row = document.createElement("tr");
+
+                const timestampCell = document.createElement("td");
+                timestampCell.textContent = alert.timestamp;
+                row.appendChild(timestampCell);
+
+                const alertCell = document.createElement("td");
+                alertCell.textContent = alert.alert;
+                row.appendChild(alertCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Charger les alertes et les afficher
+        loadAlerts().then(alerts => {
+            populateAlertsTable(alerts);
+        });
+    </script>
+</body>
+</html>

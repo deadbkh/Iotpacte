@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .alert {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page des Alertes</h1>
+    <nav>
+        <a href="index.html">Tableau des Données</a> |
+        <a href="alerts.html">Alertes</a> |
+        <a href="concc.html">Consommation</a>
+    </nav>
+    <table>
+        <thead>
+            <tr>
+                <th>Horodatage</th>
+                <th>Niveau (L)</th>
+                <th>Débit (L/h)</th>
+                <th>Alerte</th>
+            </tr>
+        </thead>
+        <tbody id="alert-table"></tbody>
+    </table>
+
+    <script>
+        // Charger les alertes
+        fetch('/alerts')
+            .then(response => response.json())
+            .then(alerts => {
+                const tableBody = document.getElementById("alert-table");
+                alerts.forEach(alert => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${alert.timestamp}</td>
+                        <td>${alert.level}</td>
+                        <td>${alert.flow_rate}</td>
+                        <td class="alert">${alert.alert}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>

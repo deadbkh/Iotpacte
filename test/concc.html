@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consommation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            max-width: 800px;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page de Consommation</h1>
+    <nav>
+        <a href="index.html">Tableau des Données</a> |
+        <a href="alerts.html">Alertes</a> |
+        <a href="concc.html">Consommation</a>
+    </nav>
+    <canvas id="consumption-chart"></canvas>
+
+    <script>
+        // Charger les données
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(entry => entry.timestamp);
+                const flowRates = data.map(entry => entry.flow_rate);
+
+                // Créer un graphique
+                const ctx = document.getElementById('consumption-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Débit (L/h)',
+                            data: flowRates,
+                            borderColor: 'blue',
+                            backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Temps'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Débit (L/h)'
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>
