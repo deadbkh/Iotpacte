@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualisation des Données IoT</title>
+    <title>Visualisation des Données Capteur IoT</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style1.css">
 </head>
 <body>
     <div class="container">
-        <h1>Visualisation des Données IoT</h1>
+        <h1 style="text-align: center;" >Visualisation des Données IoT</h1>
 
         <!-- Liens vers les autres pages -->
-        <div class="links">
-            <a href="alerts.html">Alertes</a>
-            <a href="consumption.html">Consommation</a>
-        </div>
+<div class="links">
+    <a href="alerts.html" class="button-link">Alertes</a>
+    <a href="consumption.html" class="button-link">Consommation</a>
+</div>
+
 
         <!-- Sélecteur de jour -->
         <h2>Sélectionner un jour</h2>
@@ -98,5 +99,6 @@
             populateTable(data);
         });
     </script>
+    <script src="script.js"></script>
 </body>
 </html>

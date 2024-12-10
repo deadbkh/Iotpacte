@@ -1,118 +1,40 @@
-// Fonction pour charger les données depuis le fichier JSON
-function loadData() {
-    return fetch("iot_data_liters.json")
-        .then(response => response.json())
-        .then(data => data.data);
-}
+// Fonction pour animer les titres à l'apparition
+document.addEventListener('DOMContentLoaded', () => {
+    const titles = document.querySelectorAll('h2'); // Sélectionne tous les titres h2
 
-// Fonction pour filtrer les données en fonction de la date et de la période choisie
-function filterData(data, date, duration) {
-    const now = new Date();
-    const selectedDate = new Date(date);
-    let filteredData = [];
-
-    // Calculer les dates de filtrage en fonction de la durée sélectionnée
-    let startDate;
-    if (duration === '1d') {
-        startDate = new Date(selectedDate.setDate(selectedDate.getDate() - 1)); // 1 jour avant la date sélectionnée
-    } else if (duration === '7d') {
-        startDate = new Date(selectedDate.setDate(selectedDate.getDate() - 7)); // 7 jours avant
-    } else if (duration === '30d') {
-        startDate = new Date(selectedDate.setMonth(selectedDate.getMonth() - 1)); // 1 mois avant
-    } else {
-        startDate = new Date(selectedDate.setFullYear(selectedDate.getFullYear() - 1)); // Toutes les données (1 an)
-    }
-
-    // Filtrage des données
-    data.forEach(entry => {
-        const timestamp = new Date(entry.timestamp);
-        if (timestamp >= startDate && timestamp <= now) {
-            filteredData.push(entry);
-        }
-    });
-
-    return filteredData;
-}
-
-// Fonction pour mettre à jour le tableau HTML avec les données filtrées
-function updateTable(data) {
-    const tableBody = document.getElementById("dataTable").querySelector("tbody");
-    tableBody.innerHTML = ""; // Réinitialiser le tableau
-
-    data.forEach(entry => {
-        const row = document.createElement("tr");
-
-        const timestampCell = document.createElement("td");
-        timestampCell.textContent = entry.timestamp;
-        row.appendChild(timestampCell);
-
-        const levelCell = document.createElement("td");
-        levelCell.textContent = entry.level.toFixed(2);
-        row.appendChild(levelCell);
-
-        tableBody.appendChild(row);
-    });
-}
-
-// Fonction pour mettre à jour le graphique
-function updateChart(data) {
-    const labels = data.map(entry => entry.timestamp);
-    const levels = data.map(entry => entry.level);
-
-    const ctx = document.getElementById('levelChart').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Consommation (L)',
-                data: levels,
-                borderColor: 'rgb(75, 192, 192)',
-                fill: false,
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Timestamp'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Level (L)'
-                    }
+    titles.forEach((title) => {
+        // Ajoute une classe pour l'animation
+        title.classList.add('hidden');
+        
+        // Observer quand le titre devient visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    title.classList.add('fade-in');
+                    observer.unobserve(title); // Stoppe l'observation une fois l'animation jouée
                 }
-            }
-        }
-    });
-}
-
-// Initialiser le calendrier flatpickr
-flatpickr("#datePicker", {
-    dateFormat: "Y-m-d", // Format de date
-    defaultDate: new Date() // Date par défaut : aujourd'hui
-});
-
-// Charger les données et appliquer les filtres
-document.getElementById("applyFilters").addEventListener("click", () => {
-    const date = document.getElementById("datePicker").value;
-    const duration = document.getElementById("duration").value;
-
-    loadData().then(data => {
-        const filteredData = filterData(data, date, duration);
-        updateTable(filteredData);
-        updateChart(filteredData);
+            });
+        });
+        
+        observer.observe(title); // Commence à observer chaque titre
     });
 });
 
-// Charger les données initiales (pour aujourd'hui par défaut et toutes les données)
-loadData().then(data => {
-    const defaultDate = new Date();
-    const filteredData = filterData(data, defaultDate.toISOString().split("T")[0], 'all');
-    updateTable(filteredData);
-    updateChart(filteredData);
-});
+// Effet interactif au survol
+const applyHoverEffect = () => {
+    const titles = document.querySelectorAll('h2');
+    titles.forEach((title) => {
+        title.addEventListener('mouseenter', () => {
+            title.style.color = '#6a89cc'; // Change la couleur du titre
+            title.style.transform = 'scale(1.1)'; // Agrandit légèrement
+            title.style.transition = 'transform 0.3s ease, color 0.3s ease'; // Animation fluide
+        });
+
+        title.addEventListener('mouseleave', () => {
+            title.style.color = '#4a69bd'; // Reviens à la couleur originale
+            title.style.transform = 'scale(1)'; // Reviens à la taille originale
+        });
+    });
+};
+
+applyHoverEffect();

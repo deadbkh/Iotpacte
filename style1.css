@@ -1,0 +1,227 @@
+/* Styles généraux */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* En-tête */
+header {
+    background-color: #0056b3;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+/* Menu de navigation */
+nav {
+    display: flex;
+    justify-content: center;
+    background: #004494;
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover {
+    background: white;
+    color: #004494;
+    border-radius: 5px;
+}
+
+/* Contenu principal */
+main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Titres */
+h2 {
+    color: #0056b3;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+/* Boutons interactifs */
+button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #004494;
+    transform: scale(1.05);
+}
+
+/* Graphiques */
+#chart-container {
+    margin: 40px auto;
+    text-align: center;
+}
+
+canvas {
+    max-width: 100%;
+}
+
+/* Tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #0056b3;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Alertes */
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Pied de page */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #004494;
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* Interactions */
+nav a:hover,
+button:hover,
+.alert:hover {
+    transform: scale(1.05);
+    transition: 0.3s ease-in-out;
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    nav {
+        flex-wrap: wrap;
+    }
+
+    nav a {
+        margin: 5px;
+    }
+}
+/* Animation des titres */
+.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+/* Style de la cellule contenant les boutons */
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #007bff; /* Couleur bleu */
+    padding: 10px 20px;
+    border-radius: 10px; /* Bords arrondis */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    margin: 20px 0; /* Espacement avec les autres éléments */
+}
+
+/* Conteneur des boutons */
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espacement entre les boutons */
+    margin: 20px 0; /* Espacement avec les autres éléments */
+}
+
+/* Style des liens ressemblant à des boutons */
+.button-link {
+    text-decoration: none;
+    color: white;
+    font-size: 20px; /* Police plus grande */
+    font-weight: bold;
+    background-color: #007bff; /* Couleur bleu */
+    padding: 15px 30px; /* Taille du bouton */
+    border-radius: 10px; /* Bords arrondis */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    width: 200px; /* Largeur fixe pour des boutons uniformes */
+}
+
+/* Effet de survol */
+.button-link:hover {
+    background-color: #0056b3; /* Couleur plus foncée au survol */
+    transform: scale(1.1); /* Mise en avant légère */
+}

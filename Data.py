@@ -3,13 +3,13 @@ import random
 from datetime import datetime, timedelta
 
 # Paramètres globaux
-MAX_CAPACITY = 1000  # Capacité maximale du réservoir en litres
+MAX_CAPACITY = 2000  # Capacité maximale du réservoir en litres
 MIN_LEVEL = 0        # Niveau minimum acceptable en litres
-MAX_LEVEL = 1000     # Niveau maximum acceptable en litres
-THRESHOLD_HIGH = 900  # Seuil pour niveau élevé (alerte)
-THRESHOLD_LOW = 100   # Seuil pour niveau bas (alerte)
+MAX_LEVEL = 2000     # Niveau maximum acceptable en litres
+THRESHOLD_HIGH = 1600  # Seuil pour niveau élevé (alerte)
+THRESHOLD_LOW = 600   # Seuil pour niveau bas (alerte)
 FLOW_RATE_MEAN = 0.1  # Débit moyen en L/s (exemple)
-FLOW_RATE_STD = 0.02  # Ecart-type du débit pour la variabilité
+FLOW_RATE_STD = 0.2  # Ecart-type du débit pour la variabilité
 HOURS_IN_1_MONTH = 30 * 24  # Nombre d'heures dans 1 mois
 
 def generate_flow_rate(current_level):

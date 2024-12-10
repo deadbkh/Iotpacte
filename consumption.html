@@ -5,53 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consommation du Réservoir</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        #container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            font-size: 1.2em;
-        }
-
-        canvas {
-            width: 100%;
-            height: 400px;
-        }
-
-        select, button {
-            padding: 10px;
-            font-size: 1em;
-            margin: 10px 0;
-            width: 200px;
-            cursor: pointer;
-        }
-    </style>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style1.css">
 </head>
 <body>
 
 <div id="container">
-    <h1>Consommation du Réservoir</h1>
+    <h1 style="text-align: center;">Consommation du Réservoir</h1>
     <div class="links">
-        <a href="index.html">Statistiques</a>
-        <a href="alerts.html">Les alertes</a>
+        <a href="index.html" class="button-link">Statistiques</a>
+        <a href="alerts.html" class="button-link">Les alertes</a>
     </div>
     <label for="daySelector">Sélectionner un jour:</label>
     <input type="date" id="daySelector">
@@ -131,6 +93,7 @@
         });
     }
 </script>
+<script src="script.js"></script>
 
 </body>
 </html>
