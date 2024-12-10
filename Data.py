@@ -3,13 +3,13 @@ import random
 from datetime import datetime, timedelta
 
 # Paramètres globaux
-MAX_CAPACITY = 2000  # Capacité maximale du réservoir en litres
+MAX_CAPACITY = 3000  # Capacité maximale du réservoir en litres
 MIN_LEVEL = 0        # Niveau minimum acceptable en litres
-MAX_LEVEL = 2000     # Niveau maximum acceptable en litres
-THRESHOLD_HIGH = 1600  # Seuil pour niveau élevé (alerte)
-THRESHOLD_LOW = 600   # Seuil pour niveau bas (alerte)
-FLOW_RATE_MEAN = 0.1  # Débit moyen en L/s (exemple)
-FLOW_RATE_STD = 0.2  # Ecart-type du débit pour la variabilité
+MAX_LEVEL = 3000     # Niveau maximum acceptable en litres
+THRESHOLD_HIGH = 2900  # Seuil pour niveau élevé (alerte)
+THRESHOLD_LOW = 1500   # Seuil pour niveau bas (alerte)
+FLOW_RATE_MEAN = 0.2  # Débit moyen en L/s (exemple)
+FLOW_RATE_STD = 0.4  # Ecart-type du débit pour la variabilité
 HOURS_IN_1_MONTH = 30 * 24  # Nombre d'heures dans 1 mois
 
 def generate_flow_rate(current_level):
@@ -57,7 +57,7 @@ data = {
 # Niveau initial du réservoir
 current_level = random.uniform(MIN_LEVEL, MAX_LEVEL)
 start_time = datetime.now()
-
+0
 for hour in range(1, HOURS_IN_1_MONTH + 1):
     # Calculer l'heure et formater pour affichage
     current_time = start_time + timedelta(hours=hour)
@@ -85,13 +85,13 @@ for hour in range(1, HOURS_IN_1_MONTH + 1):
     })
     
     # Vérifier les alertes spécifiques
-    if new_level < MIN_LEVEL:
+    if new_level <= MIN_LEVEL:
         alert_message = "Le réservoir est vide !"
         data["alerts"].append({
             "timestamp": timestamp,
             "alert": alert_message
         })
-    elif new_level > MAX_LEVEL:
+    elif new_level >= MAX_LEVEL:
         alert_message = "Le réservoir est plein !"
         data["alerts"].append({
             "timestamp": timestamp,
